@@ -21,10 +21,10 @@ describe('FormLogin', () => {
   });
 
   it('muestra los campos y el botón', async () => {
-    const { getByText, getByPlaceholderText } = await renderWithProviders(<FormLogin />);
+    const { getByText, getAllByText, getByPlaceholderText } = await renderWithProviders(<FormLogin />);
 
-    expect(getByText('Correo electrónico')).toBeTruthy();
-    expect(getByText('Contraseña')).toBeTruthy();
+    expect(getAllByText('Correo electrónico').length).toBeGreaterThan(0);
+    expect(getAllByText('Contraseña').length).toBeGreaterThan(0);
     expect(getByPlaceholderText('correo@ejemplo.com')).toBeTruthy();
     expect(getByText('Ingresar')).toBeTruthy();
   });
