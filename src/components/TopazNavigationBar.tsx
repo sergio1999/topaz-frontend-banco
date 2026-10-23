@@ -24,6 +24,7 @@ export default function TopazNavigationBar({ items, activeKey, onChange }: Topaz
       onTabPress={({ route }) => onChange(route.key)}
       renderIcon={({ route, color }) => <Icon source={route.icon} size={24} color={color} />}
       getLabelText={({ route }) => route.label}
+      getTestID={({ route }) => `nav-${route.key}`}
     />
   );
 }
