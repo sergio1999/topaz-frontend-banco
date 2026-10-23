@@ -4,6 +4,9 @@ export const BASE_URL =
 export const BALANCE_BASE_URL =
   process.env.EXPO_PUBLIC_BALANCE_API_URL ?? 'https://2k0ic4z7s5.execute-api.us-east-1.amazonaws.com/default';
 
+export const TRANSFER_BASE_URL =
+  process.env.EXPO_PUBLIC_TRANSFER_API_URL ?? 'https://n0qaa2fx3c.execute-api.us-east-1.amazonaws.com/default';
+
 export const ENDPOINTS = {
   AUTH: {
     LOGIN: '/login',
@@ -12,5 +15,6 @@ export const ENDPOINTS = {
   },
   HOME: {
     BALANCE: '/balance',
+    TRANSFER_LIST: '/transferList',
   },
 } as const;
