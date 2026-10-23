@@ -2,15 +2,22 @@ import { Slot } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { useAuthStore } from '../../../auth/application/store';
+import { useHomeStore } from '../../application/store';
 import HeaderBar from './headerBar';
 import NavigationBar from './navigationBar';
 
 export default function HomeLayout() {
   const clearSession = useAuthStore((state) => state.clearSession);
+  const resetHome = useHomeStore((state) => state.reset);
+
+  const handleLogout = () => {
+    resetHome();
+    clearSession();
+  };
 
   return (
     <View style={styles.container}>
-      <HeaderBar onLogout={clearSession} />
+      <HeaderBar onLogout={handleLogout} />
       <View style={styles.content}>
         <Slot />
       </View>
