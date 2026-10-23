@@ -1,7 +1,10 @@
 import { Redirect } from 'expo-router';
 
-import { DEFAULT_ROUTE } from './(pages)/routes';
+import { ROUTES } from './(pages)/routes';
+import { useAuthStore } from './modules/auth/application/store';
 
 export default function Index() {
-  return <Redirect href={DEFAULT_ROUTE} />;
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  return <Redirect href={isAuthenticated ? ROUTES.HOME : ROUTES.AUTH} />;
 }
