@@ -25,3 +25,11 @@ export interface ITransferRequest {
 export interface ITransferResponse {
   status: string;
 }
+
+export interface IMovementFilters {
+  payeer: string;
+  value: string;
+  date: Date | null;
+}
+
+export const EMPTY_MOVEMENT_FILTERS: IMovementFilters = { payeer: '', value: '', date: null };
