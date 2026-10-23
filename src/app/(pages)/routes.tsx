@@ -1,6 +1,8 @@
 export const ROUTES = {
   AUTH: '/auth',
   HOME: '/home',
+  HOME_MOVEMENTS: '/home/movements',
+  HOME_TRANSFERS: '/home/transfers',
 } as const;
 
 export type AppRoute = (typeof ROUTES)[keyof typeof ROUTES];

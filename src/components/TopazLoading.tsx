@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Modal, Portal, Text } from 'react-native-paper';
+import { ActivityIndicator, Text } from 'react-native-paper';
 
 export interface TopazLoadingProps {
   visible: boolean;
@@ -7,34 +7,23 @@ export interface TopazLoadingProps {
 }
 
 export default function TopazLoading({ visible, message }: TopazLoadingProps) {
+  if (!visible) return null;
+
   return (
-    <Portal>
-      <Modal
-        visible={visible}
-        dismissable={false}
-        dismissableBackButton={false}
-        contentContainerStyle={styles.content}>
-        <View style={styles.box}>
-          <ActivityIndicator size="large" />
-          {!!message && <Text style={styles.message}>{message}</Text>}
-        </View>
-      </Modal>
-    </Portal>
+    <View style={styles.container}>
+      <ActivityIndicator size="large" />
+      {!!message && <Text style={styles.message}>{message}</Text>}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
+  container: {
+    ...StyleSheet.absoluteFill,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  box: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 24,
-    alignItems: 'center',
     gap: 12,
-    minWidth: 120,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
   },
   message: {
     textAlign: 'center',
