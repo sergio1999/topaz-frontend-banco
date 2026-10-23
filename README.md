@@ -1,4 +1,4 @@
-# Topaz Banco
+# Topaz Banco - Prueba
 
 Aplicación móvil de banca construida con [Expo](https://expo.dev) y React Native. Permite a un cliente:
 
@@ -153,7 +153,7 @@ src/
 
 **Navegación y sesión:** las rutas `/home/*` solo son accesibles con sesión iniciada y `/auth` solo sin sesión (`Stack.Protected` en `_layout.tsx`). El grupo `(pages)` no aparece en la URL. Las rutas se declaran en `src/app/(pages)/routes.tsx`.
 
-**Estado:** cada módulo tiene su store de Zustand en `application/store.tsx` (sesión en `auth`; saldo y moneda en `home`), y `src/app/store.tsx` guarda el estado global del loader.
+**Estado:** cada módulo tiene su store de ZustaQnd en `application/store.tsx` (sesión en `auth`; saldo y moneda en `home`), y `src/app/store.tsx` guarda el estado global del loader.
 
 ## Scripts disponibles
 

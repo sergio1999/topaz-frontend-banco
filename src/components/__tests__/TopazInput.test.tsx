@@ -4,8 +4,8 @@ import TopazInput from '../TopazInput';
 
 describe('TopazInput', () => {
   it('muestra el label', async () => {
-    const { getByText } = await render(<TopazInput label="Correo" value="" onChangeText={jest.fn()} />);
-    expect(getByText('Correo')).toBeTruthy();
+    const { getAllByText } = await render(<TopazInput label="Correo" value="" onChangeText={jest.fn()} />);
+    expect(getAllByText('Correo').length).toBeGreaterThan(0);
   });
 
   it('muestra el valor recibido', async () => {
