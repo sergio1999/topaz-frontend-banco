@@ -3,19 +3,22 @@ import { StyleSheet, View } from 'react-native';
 
 import TopazAlert from '@/components/TopazAlert';
 
+import { useHomeStore } from '../../application/store';
 import { useCaseBalance } from '../../application/useCaseBalance';
 import CardBalance from '../components/cardBalance';
 
 export default function HomePage() {
-  const { balance, errorMessage, fetchBalance, clearError } = useCaseBalance();
+  const { errorMessage, fetchBalance, clearError } = useCaseBalance();
+
+  const accountBalance = useHomeStore((state) => state.accountBalance);
 
   useEffect(() => {
-    fetchBalance();
-  }, [fetchBalance]);
+    if (accountBalance === null) fetchBalance();
+  }, [accountBalance, fetchBalance]);
 
   return (
     <View style={styles.container}>
-      <CardBalance balance={balance} />
+      <CardBalance />
 
       <TopazAlert
         visible={errorMessage !== null}
