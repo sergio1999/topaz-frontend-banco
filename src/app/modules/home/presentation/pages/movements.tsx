@@ -5,10 +5,12 @@ import TopazAlert from '@/components/TopazAlert';
 import TopazText from '@/components/TopazText';
 
 import { useCaseMovements } from '../../application/useCaseMovements';
+import FilterMovements from '../components/filterMovements';
 import Movement from '../components/movement';
 
 export default function MovementsPage() {
-  const { transfers, errorMessage, fetchTransfers, clearError } = useCaseMovements();
+  const { transfers, filteredTransfers, filters, setFilters, errorMessage, fetchTransfers, clearError } =
+    useCaseMovements();
 
   useEffect(() => {
     fetchTransfers();
@@ -17,9 +19,22 @@ export default function MovementsPage() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={transfers}
+        data={filteredTransfers}
         keyExtractor={(item, index) => `${item.payeer.document}-${item.date}-${index}`}
-        ListHeaderComponent={<TopazText variant="titleLarge" style={styles.title}>Movimientos</TopazText>}
+        keyboardShouldPersistTaps="handled"
+        ListHeaderComponent={
+          <View>
+            <TopazText variant="titleLarge" style={styles.title}>
+              Movimientos
+            </TopazText>
+            <FilterMovements filters={filters} onChange={setFilters} />
+          </View>
+        }
+        ListEmptyComponent={
+          transfers.length > 0 ? (
+            <TopazText style={styles.empty}>No hay movimientos que coincidan con los filtros</TopazText>
+          ) : undefined
+        }
         renderItem={({ item }) => <Movement transfer={item} />}
       />
 
@@ -38,6 +53,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
+    padding: 16,
+  },
+  empty: {
+    textAlign: 'center',
     padding: 16,
   },
 });

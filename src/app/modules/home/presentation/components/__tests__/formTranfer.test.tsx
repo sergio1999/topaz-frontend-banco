@@ -48,9 +48,9 @@ describe('FormTranfer', () => {
   });
 
   it('muestra los campos valor, moneda y documento', async () => {
-    const { getByText, getByPlaceholderText } = await renderWithProviders(<FormTranfer />);
+    const { getByText, getAllByText, getByPlaceholderText } = await renderWithProviders(<FormTranfer />);
 
-    expect(getByText('Valor')).toBeTruthy();
+    expect(getAllByText('Valor').length).toBeGreaterThan(0);
     expect(getByPlaceholderText('0.00')).toBeTruthy();
     expect(getByPlaceholderText('Documento del destinatario')).toBeTruthy();
     expect(getByText('Transferir')).toBeTruthy();

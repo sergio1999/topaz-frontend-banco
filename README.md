@@ -1,4 +1,4 @@
-# Topaz Banco
+# Topaz Banco - Prueba
 
 Aplicación móvil de banca construida con [Expo](https://expo.dev) y React Native. Permite a un cliente:
 

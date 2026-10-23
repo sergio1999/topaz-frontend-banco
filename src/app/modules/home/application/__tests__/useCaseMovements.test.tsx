@@ -3,6 +3,7 @@ import { act, renderHook } from '@testing-library/react-native';
 import { useAuthStore } from '@/app/modules/auth/application/store';
 import { useAppStore } from '@/app/store';
 
+import { EMPTY_MOVEMENT_FILTERS } from '../../domain/i.tranfer';
 import { getTransferListService } from '../../infrastructure/apiServices';
 import { useCaseMovements } from '../useCaseMovements';
 
@@ -119,5 +120,144 @@ describe('useCaseMovements', () => {
     });
 
     expect(result.current.errorMessage).toBeNull();
+  });
+
+  describe('filtros', () => {
+    const LIST = [
+      {
+        value: 250,
+        date: '2026-03-20',
+        currency: 'BRL',
+        payeer: { document: '98765432100', name: 'Ana Pérez' },
+      },
+      {
+        value: 80.5,
+        date: '2026-03-21',
+        currency: 'BRL',
+        payeer: { document: '11122233344', name: 'Luis Gómez' },
+      },
+      {
+        value: 250,
+        date: '2026-03-21',
+        currency: 'BRL',
+        payeer: { document: '55566677788', name: 'Ana Torres' },
+      },
+    ];
+
+    const loadList = async () => {
+      (getTransferListService as jest.Mock).mockResolvedValue({ mesage: 'ok', transfers: LIST });
+      const hook = await renderHook(() => useCaseMovements());
+      await act(async () => {
+        await hook.result.current.fetchTransfers();
+      });
+      return hook;
+    };
+
+    it('inicia sin filtros y devuelve todas las transferencias', async () => {
+      const { result } = await loadList();
+
+      expect(result.current.filters).toEqual(EMPTY_MOVEMENT_FILTERS);
+      expect(result.current.filteredTransfers).toEqual(LIST);
+    });
+
+    it('filtra por nombre del destinatario sin distinguir mayúsculas', async () => {
+      const { result } = await loadList();
+
+      await act(async () => {
+        result.current.setFilters({ ...EMPTY_MOVEMENT_FILTERS, payeer: 'ANA' });
+      });
+
+      expect(result.current.filteredTransfers.map((t) => t.payeer.name)).toEqual([
+        'Ana Pérez',
+        'Ana Torres',
+      ]);
+    });
+
+    it('filtra por documento del destinatario', async () => {
+      const { result } = await loadList();
+
+      await act(async () => {
+        result.current.setFilters({ ...EMPTY_MOVEMENT_FILTERS, payeer: '1112223' });
+      });
+
+      expect(result.current.filteredTransfers.map((t) => t.payeer.name)).toEqual(['Luis Gómez']);
+    });
+
+    it('filtra por valor exacto', async () => {
+      const { result } = await loadList();
+
+      await act(async () => {
+        result.current.setFilters({ ...EMPTY_MOVEMENT_FILTERS, value: '250' });
+      });
+
+      expect(result.current.filteredTransfers).toHaveLength(2);
+    });
+
+    it('acepta coma como separador decimal en el valor', async () => {
+      const { result } = await loadList();
+
+      await act(async () => {
+        result.current.setFilters({ ...EMPTY_MOVEMENT_FILTERS, value: '80,5' });
+      });
+
+      expect(result.current.filteredTransfers.map((t) => t.payeer.name)).toEqual(['Luis Gómez']);
+    });
+
+    it('ignora un valor que no es numérico', async () => {
+      const { result } = await loadList();
+
+      await act(async () => {
+        result.current.setFilters({ ...EMPTY_MOVEMENT_FILTERS, value: '.' });
+      });
+
+      expect(result.current.filteredTransfers).toHaveLength(3);
+    });
+
+    it('filtra por fecha', async () => {
+      const { result } = await loadList();
+
+      await act(async () => {
+        result.current.setFilters({ ...EMPTY_MOVEMENT_FILTERS, date: new Date(2026, 2, 21) });
+      });
+
+      expect(result.current.filteredTransfers.map((t) => t.payeer.name)).toEqual([
+        'Luis Gómez',
+        'Ana Torres',
+      ]);
+    });
+
+    it('combina los filtros', async () => {
+      const { result } = await loadList();
+
+      await act(async () => {
+        result.current.setFilters({ payeer: 'ana', value: '250', date: new Date(2026, 2, 21) });
+      });
+
+      expect(result.current.filteredTransfers.map((t) => t.payeer.name)).toEqual(['Ana Torres']);
+    });
+
+    it('devuelve una lista vacía si nada coincide, sin perder las transferencias originales', async () => {
+      const { result } = await loadList();
+
+      await act(async () => {
+        result.current.setFilters({ ...EMPTY_MOVEMENT_FILTERS, payeer: 'zzz' });
+      });
+
+      expect(result.current.filteredTransfers).toEqual([]);
+      expect(result.current.transfers).toEqual(LIST);
+    });
+
+    it('al restablecer los filtros vuelve a mostrar todo', async () => {
+      const { result } = await loadList();
+      await act(async () => {
+        result.current.setFilters({ ...EMPTY_MOVEMENT_FILTERS, payeer: 'zzz' });
+      });
+
+      await act(async () => {
+        result.current.setFilters(EMPTY_MOVEMENT_FILTERS);
+      });
+
+      expect(result.current.filteredTransfers).toEqual(LIST);
+    });
   });
 });

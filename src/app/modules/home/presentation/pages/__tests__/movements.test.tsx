@@ -9,6 +9,10 @@ jest.mock('../../../application/useCaseMovements', () => ({
   useCaseMovements: jest.fn(),
 }));
 
+jest.mock('react-native-paper-dates', () => ({
+  DatePickerModal: () => null,
+}));
+
 const fetchTransfers = jest.fn();
 const clearError = jest.fn();
 
@@ -27,11 +31,20 @@ const TRANSFERS = [
   },
 ];
 
+const setFilters = jest.fn();
+
 const mockUseCase = (
-  overrides: { transfers?: typeof TRANSFERS; errorMessage?: string | null } = {},
+  overrides: {
+    transfers?: typeof TRANSFERS;
+    filteredTransfers?: typeof TRANSFERS;
+    errorMessage?: string | null;
+  } = {},
 ) =>
   (useCaseMovements as jest.Mock).mockReturnValue({
     transfers: overrides.transfers ?? [],
+    filteredTransfers: overrides.filteredTransfers ?? overrides.transfers ?? [],
+    filters: { payeer: '', value: '', date: null },
+    setFilters,
     errorMessage: overrides.errorMessage ?? null,
     fetchTransfers,
     clearError,
@@ -65,6 +78,43 @@ describe('MovementsPage', () => {
   it('no muestra filas cuando la lista está vacía', async () => {
     const { queryByText } = await renderWithProviders(<MovementsPage />);
     expect(queryByText('Ana Pérez')).toBeNull();
+  });
+
+  it('muestra los campos de filtro', async () => {
+    const { getAllByText } = await renderWithProviders(<MovementsPage />);
+
+    expect(getAllByText('Destinatario').length).toBeGreaterThan(0);
+    expect(getAllByText('Valor').length).toBeGreaterThan(0);
+    expect(getAllByText('Fecha').length).toBeGreaterThan(0);
+  });
+
+  it('muestra solo las transferencias filtradas', async () => {
+    mockUseCase({ transfers: TRANSFERS, filteredTransfers: [TRANSFERS[1]] });
+    const { getByText, queryByText } = await renderWithProviders(<MovementsPage />);
+
+    expect(getByText('Luis Gómez')).toBeTruthy();
+    expect(queryByText('Ana Pérez')).toBeNull();
+  });
+
+  it('muestra un mensaje cuando los filtros no coinciden con ningún movimiento', async () => {
+    mockUseCase({ transfers: TRANSFERS, filteredTransfers: [] });
+    const { getByText } = await renderWithProviders(<MovementsPage />);
+
+    expect(getByText('No hay movimientos que coincidan con los filtros')).toBeTruthy();
+  });
+
+  it('no muestra el mensaje de sin coincidencias si aún no hay movimientos', async () => {
+    const { queryByText } = await renderWithProviders(<MovementsPage />);
+
+    expect(queryByText('No hay movimientos que coincidan con los filtros')).toBeNull();
+  });
+
+  it('actualiza los filtros al escribir en un campo', async () => {
+    const { getByPlaceholderText } = await renderWithProviders(<MovementsPage />);
+
+    await fireEvent.changeText(getByPlaceholderText('Nombre o documento'), 'Ana');
+
+    expect(setFilters).toHaveBeenCalledWith({ payeer: 'Ana', value: '', date: null });
   });
 
   it('muestra la alerta de error y la cierra con clearError', async () => {
