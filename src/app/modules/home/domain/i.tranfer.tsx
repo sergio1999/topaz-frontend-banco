@@ -14,3 +14,14 @@ export interface ITransferListResponse {
   mesage: string;
   transfers: ITransfer[];
 }
+
+export interface ITransferRequest {
+  value: number;
+  currency: string;
+  payeerDocument: string;
+  transferDate: string;
+}
+
+export interface ITransferResponse {
+  status: string;
+}
