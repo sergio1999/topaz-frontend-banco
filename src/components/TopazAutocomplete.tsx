@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import { HelperText, List, Surface, TextInput } from 'react-native-paper';
 
+import { standardInputProps } from './topazInputStyle';
+
 export interface TopazAutocompleteOption {
   label: string;
   value: string;
@@ -44,7 +46,7 @@ export default function TopazAutocomplete({
   return (
     <View style={style}>
       <TextInput
-        mode="outlined"
+        {...standardInputProps}
         label={label}
         placeholder={placeholder}
         value={query}

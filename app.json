@@ -17,7 +17,8 @@
         "backgroundColor": "#FFFFFF",
         "backgroundImage": "./assets/images/android-icon-background.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.sergiopenaranda.Topaz"
     },
     "web": {
       "output": "server",
@@ -31,7 +32,7 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#FFFFFF",
+          "backgroundColor": "#1E1E68",
           "dark": {
             "backgroundColor": "#002F6C"
           }
@@ -42,6 +43,16 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "9be8af0e-f6b9-4921-8d8c-448d62284027"
+      }
     }
   }
 }

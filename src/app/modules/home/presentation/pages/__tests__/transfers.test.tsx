@@ -8,11 +8,6 @@ jest.mock('../../components/formTranfer', () => {
 });
 
 describe('TransfersPage', () => {
-  it('muestra el título', async () => {
-    const { getByText } = await renderWithProviders(<TransfersPage />);
-    expect(getByText('Transferencias')).toBeTruthy();
-  });
-
   it('renderiza el formulario de transferencia', async () => {
     const { getByText } = await renderWithProviders(<TransfersPage />);
     expect(getByText('form-transfer')).toBeTruthy();

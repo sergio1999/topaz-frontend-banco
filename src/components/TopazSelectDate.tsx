@@ -3,6 +3,8 @@ import { StyleProp, View, ViewStyle } from 'react-native';
 import { HelperText, TextInput } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 
+import { standardInputProps } from './topazInputStyle';
+
 export interface TopazSelectDateProps {
   label?: string;
   value?: Date | null;
@@ -34,7 +36,7 @@ export default function TopazSelectDate({
   return (
     <View style={style}>
       <TextInput
-        mode="outlined"
+        {...standardInputProps}
         label={label}
         value={formatDate(value)}
         placeholder="DD/MM/AAAA"

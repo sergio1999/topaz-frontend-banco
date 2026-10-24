@@ -24,9 +24,6 @@ export default function MovementsPage() {
         keyboardShouldPersistTaps="handled"
         ListHeaderComponent={
           <View>
-            <TopazText variant="titleLarge" style={styles.title}>
-              Movimientos
-            </TopazText>
             <FilterMovements filters={filters} onChange={setFilters} />
           </View>
         }
