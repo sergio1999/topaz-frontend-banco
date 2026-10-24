@@ -18,6 +18,10 @@ export default function NavigationBar() {
       items={HOME_NAV_ITEMS}
       activeKey={pathname}
       onChange={(route) => router.navigate(route as Href)}
+      backgroundColor="#1E1E68"
+      activeColor="#FFFFFF"
+      inactiveColor="#FFFFFF"
+      indicatorColor="rgba(255, 255, 255, 0.2)"
     />
   );
 }

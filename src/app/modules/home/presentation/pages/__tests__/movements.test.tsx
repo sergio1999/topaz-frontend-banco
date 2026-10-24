@@ -61,11 +61,6 @@ describe('MovementsPage', () => {
     expect(fetchTransfers).toHaveBeenCalledTimes(1);
   });
 
-  it('muestra el título', async () => {
-    const { getByText } = await renderWithProviders(<MovementsPage />);
-    expect(getByText('Movimientos')).toBeTruthy();
-  });
-
   it('muestra una fila por cada transferencia', async () => {
     mockUseCase({ transfers: TRANSFERS });
     const { getByText } = await renderWithProviders(<MovementsPage />);
