@@ -39,6 +39,8 @@ Las versiones mínimas las define Expo SDK 58:
 
 Fuente: [documentación de Expo SDK 58](https://docs.expo.dev/versions/v58.0.0/). Para compilar la app para iOS se requiere Xcode 26.4 o superior.
 
+[Url apk para android](https://expo.dev/accounts/sergiopenaranda/projects/Topaz/builds/7c8ee131-7f61-4b3a-a737-9843d44386cd)
+
 ## Instalación y ejecución
 
 1. Clonar el repositorio e instalar las dependencias:
