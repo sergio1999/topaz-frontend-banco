@@ -44,3 +44,6 @@ example
 
 # testing
 coverage/
+
+# IDE
+.idea/

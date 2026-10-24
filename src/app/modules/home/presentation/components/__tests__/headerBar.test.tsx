@@ -15,6 +15,11 @@ describe('HeaderBar', () => {
     expect(getByText('Mi banco')).toBeTruthy();
   });
 
+  it('muestra el logo de la app', async () => {
+    const { getByLabelText } = await renderWithProviders(<HeaderBar onLogout={jest.fn()} />);
+    expect(getByLabelText('Logo')).toBeTruthy();
+  });
+
   it('ejecuta onLogout al presionar el botón de cerrar sesión', async () => {
     const onLogout = jest.fn();
     const { getByLabelText } = await renderWithProviders(<HeaderBar onLogout={onLogout} />);

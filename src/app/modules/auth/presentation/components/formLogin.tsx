@@ -55,6 +55,7 @@ export default function FormLogin() {
 
       <TopazButton
         label="Ingresar"
+        buttonColor="#1E1E68"
         onPress={handleSubmit}
         disabled={!isFormComplete}
         style={styles.button}

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import { HelperText, Menu, TextInput } from 'react-native-paper';
 
+import { standardInputProps } from './topazInputStyle';
+
 export interface TopazSelectOption {
   label: string;
   value: string;
@@ -38,7 +40,7 @@ export default function TopazSelect({
         onDismiss={() => setVisible(false)}
         anchor={
           <TextInput
-            mode="outlined"
+            {...standardInputProps}
             label={label}
             placeholder={placeholder}
             value={selected?.label ?? ''}
